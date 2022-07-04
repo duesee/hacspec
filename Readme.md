@@ -1,97 +1,25 @@
+|                  |                                                                           |                                                                                                                                       |                                                   |
+|------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|
+| hacspec          | [![crates.io][crate-hacspec]](https://crates.io/crates/hacspec)           |                           [![Docs](https://img.shields.io/badge/docs-master-blue.svg?logo=rust)](language/)                           | [![Build & Test Status][build-image]][build-link] |
+| hacspec-lib      | [![crates.io][crate-lib]](https://crates.io/crates/hacspec-lib)           |   [![Docs](https://img.shields.io/badge/docs-master-blue.svg?logo=rust)](https://hacspec.github.io/hacspec/hacspec_lib/index.html)    | [![Build & Test Status][build-image]][build-link] |
+| hacspec-provider | [![crates.io][crate-provider]](https://crates.io/crates/hacspec-provider) | [![Docs](https://img.shields.io/badge/docs-master-blue.svg?logo=rust)](https://hacspec.github.io/hacspec/hacspec_provider/index.html) | [![Build & Test Status][build-image]][build-link] |
+
 # hacspec [![hacspec chat][chat-image]][chat-link]
 
 <img src="https://raw.githubusercontent.com/hacspec/hacspec/master/img/mascot.png" width=100 style="float: left;"> A specification language for crypto primitives in Rust.
 
 _This is the successor of https://github.com/HACS-workshop/hacspec._
 
-For a quick intro, you can look at the [presentation slides](./presentation_slides.pdf). An in-depth
-[technical report](https://hal.inria.fr/hal-03176482) is also available.
 
-## Crates
+For a quick intro, you can look at the [presentation slides](./presentation_slides.pdf).
+An in-depth [technical report](https://hal.inria.fr/hal-03176482) is also available.
 
-| Name             | Crates.io                                                                 |                                                                 Docs                                                                  |                        CI                         |
-| :--------------- | :------------------------------------------------------------------------ | :-----------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------: |
-| hacspec          | [![crates.io][crate-hacspec]](https://crates.io/crates/hacspec)           |                           [![Docs](https://img.shields.io/badge/docs-master-blue.svg?logo=rust)](language/)                           | [![Build & Test Status][build-image]][build-link] |
-| hacspec-lib      | [![crates.io][crate-lib]](https://crates.io/crates/hacspec-lib)           |   [![Docs](https://img.shields.io/badge/docs-master-blue.svg?logo=rust)](https://hacspec.github.io/hacspec/hacspec_lib/index.html)    | [![Build & Test Status][build-image]][build-link] |
-| hacspec-provider | [![crates.io][crate-provider]](https://crates.io/crates/hacspec-provider) | [![Docs](https://img.shields.io/badge/docs-master-blue.svg?logo=rust)](https://hacspec.github.io/hacspec/hacspec_provider/index.html) | [![Build & Test Status][build-image]][build-link] |
-
-## Usage
-
-### Writing hacspec
+## Writing hacspec
 
 hacspec is always valid Rust code such that starting to write hacspec is as simple as writing Rust code that is compliant with the [language](Language.md) specification.
 However, this is very tedious.
 It is recommended to use the [hacspec standard library](https://crates.io/crates/hacspec-lib) to write hacspec.
-In order to ensure that the code is a hacspec one can use the typecheker.
-
-### Typechecking
-
-Make sure you have at least `rustup 1.23.0`.
-The [`rust-toolchain`](./language/rust-toolchain) automatically picks the correct Rust nightly version and components.
-The compiler version is currently pinned to `nightly-2021-11-14`.
-
-**Installing the typechecker from the repository**
-```
-cargo install --path language
-```
-
-**Installing the typechecker from crates.io (not always up to date)**
-```
-cargo install hacspec --version 0.2.0-beta.4
-```
-
-**Manually installing dependencies**
-
-First ensure that Rust nightly is installed and the typechecker is installed.
-
-```bash
-cd language
-rustup toolchain install nightly-2021-11-14
-rustup component add --toolchain nightly-2021-11-14 rustc-dev
-cargo +nightly-2021-11-14 install hacspec
-```
-
-Depending on your system you might also need `llvm-tools-preview`
-
-```bash
-rustup component add --toolchain nightly-2021-11-14 llvm-tools-preview
-```
-
-**Usage**
-
-In a hacspec crate or workspace directory typechecking can be done as follows now:
-(Specifying `+nightly-2021-11-14` is only necessary if it's not specified in the toolchain as it is in this main repository.)
-
-```bash
-cargo +nightly-2021-11-14 hacspec <crate-name>
-```
-
-Note that the crate dependencies need to be compiled before it can be typechecked.
-
-```bash
-cargo +nightly-2021-11-14 build
-```
-
-If typechecking succeeds, it should show
-
-```bash
-> Successfully typechecked.
-```
-
-### Generating code
-
-To generate F\*, EasyCrypt, or Coq code from hacspec the typechecker (see above) is required.
-
-```bash
-cargo +nightly-2021-11-14 hacspec -o <fst-name>.fst <crate-name>
-cargo +nightly-2021-11-14 hacspec -o <ec-name>.ec <crate-name>
-cargo +nightly-2021-11-14 hacspec -o <coq-name>.v <crate-name>
-```
-
-## Publications & Other material
-
-* [📕 Tech report](https://hal.inria.fr/hal-03176482)
-* [📕 Original hacspec paper](https://www.franziskuskiefer.de/publications/hacspec-ssr18-paper.pdf)
+In order to ensure that the code is a hacspec one can use the typechecker (see Quickstart).
 
 # Repository Structure
 
@@ -118,28 +46,89 @@ Compiled code:
 - [easycrypt](easycrypt/): contains EasyCrypt translations of the cryptographic specs, produced by the hacspec compiler
 - [coq](coq/): contains Coq translations of the cryptographic specs, produced by the hacspec compiler
 
-## Contributing
+# Quickstart
 
-Before starting any work please join the [Zulip chat][chat-link], start a [discussion on Github](https://github.com/hacspec/hacspec/discussions), or file an [issue](https://github.com/hacspec/hacspec/issues) to discuss your contribution.
+Make sure you have at least `rustup 1.23.0`.
+The [`rust-toolchain`](./language/rust-toolchain) config file automatically picks the correct Rust nightly version and components.
+The compiler version is currently pinned to `nightly-2021-11-14`.
 
-The main entry points for contributions and some general work items are
+## Install the typechecker (`cargo hacspec`)
 
-- the [language](language/) if you want to work on the hacspec language itself
-  - improve the typechecker
-  - improve the existing compiler backends (F\* and EasyCrypt)
-  - add a new compiler backend
-- hacspec [implementations](examples/)
-  - implementing new cryptographic primitives in hacspec
-  - improve the [provider](provider/)
-- the [standard library](lib/)
-  - enhance numeric implementations
-  - enhance vector arithmetic
+### From the repository (recommended)
+
+You can install the typechecker from source with ...
+
+```bash
+git clone https://github.com/hacspec/hacspec
+cd hacspec
+cargo install --path language
+```
+
+### From crates.io
+
+Alternatively, you can install cargo-hacspec from crates.io with ...
+
+```bash
+cargo install hacspec --version 0.2.0-beta.4
+```
+
+Note, however, that it might not be up to date.
+
+### Manually (Fallback)
+
+As a third alternative, you can try to install everything manually with ...
+
+```bash
+cd language
+rustup toolchain install nightly-2021-11-14
+rustup component add --toolchain nightly-2021-11-14 rustc-dev
+cargo +nightly-2021-11-14 install hacspec
+```
+
+Depending on your system you might also need `llvm-tools-preview`.
+
+```bash
+rustup component add --toolchain nightly-2021-11-14 llvm-tools-preview
+```
+
+## Run the typechecker
+
+In a hacspec crate or workspace directory typechecking can be done with ...
+
+```bash
+cargo +nightly-2021-11-14 hacspec <crate-name>
+```
+
+(Specifying `+nightly-2021-11-14` is only necessary if it's not specified in the toolchain as it is in this main repository.)
+
+Note that the crate dependencies need to be compiled before it can be typechecked.
+
+```bash
+cargo +nightly-2021-11-14 build
+```
+
+If typechecking succeeds, you should see ...
+
+```bash
+> Successfully typechecked.
+```
+
+## Generating code
+
+Now, to generate F\*, EasyCrypt, or Coq code from the hacspec, run either of ...
+
+
+```bash
+cargo +nightly-2021-11-14 hacspec -e fst <crate-name>
+cargo +nightly-2021-11-14 hacspec -e ec <crate-name>
+cargo +nightly-2021-11-14 hacspec -e v <crate-name>
+```
 
 # Examples
 
 There's a set of example specs, divided between the [safe](examples/) and [unsafe](examples-unsafe). To run all examples one can use `cargo test`.
 
-## Examples
+## Safe examples
 
 - [Chacha20](examples/chacha20/src/chacha20.rs)
 - [Poly1305](examples/poly1305/src/poly1305.rs)
@@ -165,6 +154,28 @@ There's a set of example specs, divided between the [safe](examples/) and [unsaf
 - [GF 128](examples-unsafe/src/aes_gcm/gf128.rs)
 - [AES-GCM 128/256](examples-unsafe/src/aes_gcm/aesgcm.rs)
 - [Blake2b](examples-unsafe/src/blake2/blake2b.rs)
+
+# Publications & Other material
+
+* [📕 Tech report](https://hal.inria.fr/hal-03176482)
+* [📕 Original hacspec paper](https://www.franziskuskiefer.de/publications/hacspec-ssr18-paper.pdf)
+
+# Contributing
+
+Before starting any work please join the [Zulip chat][chat-link], start a [discussion on Github](https://github.com/hacspec/hacspec/discussions), or file an [issue](https://github.com/hacspec/hacspec/issues) to discuss your contribution.
+
+The main entry points for contributions and some general work items are
+
+- the [language](language/) if you want to work on the hacspec language itself
+  - improve the typechecker
+  - improve the existing compiler backends (F\* and EasyCrypt)
+  - add a new compiler backend
+- hacspec [implementations](examples/)
+  - implementing new cryptographic primitives in hacspec
+  - improve the [provider](provider/)
+- the [standard library](lib/)
+  - enhance numeric implementations
+  - enhance vector arithmetic
 
 [//]: # "badges"
 [crate-outdated-image]: https://img.shields.io/badge/crate-outdated-red.svg?logo=rust
