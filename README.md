@@ -10,49 +10,21 @@
 
 _This is the successor of https://github.com/HACS-workshop/hacspec._
 
-
 For a quick intro, you can look at the [presentation slides](./presentation_slides.pdf).
 An in-depth [technical report](https://hal.inria.fr/hal-03176482) is also available.
 
-## Writing hacspec
+# Quickstart
 
 hacspec is always valid Rust code such that starting to write hacspec is as simple as writing Rust code that is compliant with the [language](Language.md) specification.
 However, this is very tedious.
 It is recommended to use the [hacspec standard library](https://crates.io/crates/hacspec-lib) to write hacspec.
-In order to ensure that the code is a hacspec one can use the typechecker (see Quickstart).
+In order to ensure that the code is a hacspec one can use the typechecker, i.e., `cargo hacspec`.
 
-# Repository Structure
-
-This is a cargo workspace consisting of three main crates:
-
-- [hacspec](language/): the compiler, typechecker and language infrastructure for the hacspec subset of Rust
-  - Note that the language infrastructure is excluded from the main workspace of crates, so it won't be build when you launch `cargo build` from the root of the repository.
-- [hacspec-lib](lib/): the standard library of hacspec programs
-- [hacspec-provider](provider/): a cryptography provider with a set of cryptographic primitives written in hacspec
-  - This combines the individual crates from the [examples](examples/) directory and implements the [RustCrypto](https://github.com/RustCrypto/traits) API on top to use them from regular Rust code.
-
-The three main crates make use of a set of additional crates:
-
-- [abstract-integers](utils/abstract-integers/): wrapper around `BigInt` for modular natural integers
-- [secret-integers](utils/secret-integers/): wrapper around integer types for constant-timedness
-- [unsafe-hacspec-examples](examples-unsafe/): cryptographic specs written in hacspec but not formally typechecked yet(hence the unsafety) as hacspec is a work in progress
-- [examples](examples/): cryptographic primitives that have passed the hacspec typechecking
-- [hacspec-attributes](utils/attributes): helper for the hacspec library
-- [hacspec-dev](utils/dev/): utilities that are not part of the language
-
-Compiled code:
-
-- [fstar](fstar/): contains F\* translations of the cryptographic specs, produced by the hacspec compiler
-- [easycrypt](easycrypt/): contains EasyCrypt translations of the cryptographic specs, produced by the hacspec compiler
-- [coq](coq/): contains Coq translations of the cryptographic specs, produced by the hacspec compiler
-
-# Quickstart
+## Install the typechecker
 
 Make sure you have at least `rustup 1.23.0`.
 The [`rust-toolchain`](./language/rust-toolchain) config file automatically picks the correct Rust nightly version and components.
 The compiler version is currently pinned to `nightly-2021-11-14`.
-
-## Install the typechecker (`cargo hacspec`)
 
 ### From the repository (recommended)
 
@@ -113,7 +85,7 @@ If typechecking succeeds, you should see ...
 > Successfully typechecked.
 ```
 
-## Generating code
+## Generate code
 
 Now, to generate F\*, EasyCrypt, or Coq code from the hacspec, run either of ...
 
@@ -176,6 +148,31 @@ The main entry points for contributions and some general work items are
 - the [standard library](lib/)
   - enhance numeric implementations
   - enhance vector arithmetic
+
+## Repository Structure
+
+This is a cargo workspace consisting of three main crates:
+
+- [hacspec](language/): the compiler, typechecker and language infrastructure for the hacspec subset of Rust
+  - Note that the language infrastructure is excluded from the main workspace of crates, so it won't be build when you launch `cargo build` from the root of the repository.
+- [hacspec-lib](lib/): the standard library of hacspec programs
+- [hacspec-provider](provider/): a cryptography provider with a set of cryptographic primitives written in hacspec
+  - This combines the individual crates from the [examples](examples/) directory and implements the [RustCrypto](https://github.com/RustCrypto/traits) API on top to use them from regular Rust code.
+
+The three main crates make use of a set of additional crates:
+
+- [abstract-integers](utils/abstract-integers/): wrapper around `BigInt` for modular natural integers
+- [secret-integers](utils/secret-integers/): wrapper around integer types for constant-timedness
+- [unsafe-hacspec-examples](examples-unsafe/): cryptographic specs written in hacspec but not formally typechecked yet(hence the unsafety) as hacspec is a work in progress
+- [examples](examples/): cryptographic primitives that have passed the hacspec typechecking
+- [hacspec-attributes](utils/attributes): helper for the hacspec library
+- [hacspec-dev](utils/dev/): utilities that are not part of the language
+
+Compiled code:
+
+- [fstar](fstar/): contains F\* translations of the cryptographic specs, produced by the hacspec compiler
+- [easycrypt](easycrypt/): contains EasyCrypt translations of the cryptographic specs, produced by the hacspec compiler
+- [coq](coq/): contains Coq translations of the cryptographic specs, produced by the hacspec compiler
 
 [//]: # "badges"
 [crate-outdated-image]: https://img.shields.io/badge/crate-outdated-red.svg?logo=rust
